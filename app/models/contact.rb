@@ -3,8 +3,8 @@ class Contact < ActiveRecord::Base
 
   # validates (TODO ADD LATER)
  
-  def to_s
-    "#{id}: #{lastname}, #{firstname} (#{email})#{self.phone_mash}"
+  def echo
+    "#{id}: #{firstname} #{lastname} (#{email})#{self.phone_mash}"
   end
 
   def phone_mash

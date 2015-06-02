@@ -19,7 +19,18 @@ get '/all' do
   erb :index
 end
 
-post '/new' do
+get '/find' do
+  @contacts = Contact.where('firstname LIKE ? OR lastname LIKE ? OR email LIKE ?', "%#{params[:query]}%", "%#{params[:query]}%", "%#{params[:query]}%")
+  erb :index
+end
+
+get '/delete' do
+  @contact = Contact.find(params[:id])
+  @contact.destroy
+  erb :index
+end
+
+post '/new_contact' do
   @contact = Contact.new(
     firstname:   params[:firstname],
     lastname:  params[:lastname],
@@ -32,7 +43,15 @@ post '/new' do
   end
 end
 
-get '/find' do
-  @contacts = Contact.where('firstname LIKE ? OR lastname LIKE ? OR email LIKE ?', "%#{params[:query]}%", "%#{params[:query]}%", "%#{params[:query]}%")
-  erb :index
+post '/add_phone' do
+  @phone = Phone.new(
+    phone:   params[:phone],
+    label:  params[:label],
+    contact_id:  params[:id]
+  )
+  if @phone.save
+    redirect '/'
+  else
+    erb :index
+  end
 end

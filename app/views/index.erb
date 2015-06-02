@@ -3,7 +3,7 @@
 <!-- Create new -->
 
 <h3>Create new</h3>
-<form method="post" action="/new">
+<form method="post" action="/new_contact">
   <div>
     <label>First Name:</label>
     <input type="text" name="firstname" placeholder="first" required="true">
@@ -30,10 +30,12 @@
     <input type="submit" value="All">
   </div>  
 </form>
-<% @contacts.each do |contact| %>
-  <div>
-    <%= contact.firstname %> <%= contact.lastname %> (<%= contact.email %>)
-  </div>
+<% if @contacts %>
+  <% @contacts.each do |contact| %>
+    <div>
+      <%= contact.echo %>
+    </div>
+  <% end %>
 <% end %>
 
 <!-- Find (id, first_name, last_name, email) -->
@@ -51,4 +53,38 @@
 </form>
 
 <!-- Delete -->
+<hr>
+
+<h3>Delete</h3>
+<form method="get" action="/delete">
+  <div>
+    <label>Delete:</label>
+    <input type="text" name="id" placeholder="by id # (integer)">
+  </div>
+  <div>
+    <input type="submit" value="Delete">
+  </div>  
+</form>
+
 <!-- Add phone -->
+<hr>
+
+<h3>Add phone</h3>
+<form method="post" action="/add_phone">
+  <div>
+    <label>Phone:</label>
+    <input type="text" name="phone" placeholder="#x9" required="true">
+  </div>
+  <div>
+    <label>Label:</label>
+    <input type="text" name="label" placeholder="label" required="true">
+  </div>
+
+  <div>
+    <label>Add to contact #:</label>
+    <input type="text" name="id" placeholder="by id # (integer)">
+  </div>
+  <div>
+    <input type="submit" value="Add phone">
+  </div>  
+</form>
