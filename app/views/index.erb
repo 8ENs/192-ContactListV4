@@ -1,1 +1,54 @@
-<h1>Home Page</h1>
+<h1>Contact List</h1>
+
+<!-- Create new -->
+
+<h3>Create new</h3>
+<form method="post" action="/new">
+  <div>
+    <label>First Name:</label>
+    <input type="text" name="firstname" placeholder="first" required="true">
+  </div>
+  <div>
+    <label>Last Name:</label>
+    <input type="text" name="lastname" placeholder="last" required="true">
+  </div>
+  <div>
+    <label>Email:</label>
+    <input type="email" name="email" placeholder="email" required="true">
+  </div>
+  <div>
+    <input type="submit" value="Save">
+  </div>
+</form>
+
+<!-- List all -->
+<hr>
+
+<h3>List</h3>
+<form method="get" action="/all">
+  <div>
+    <input type="submit" value="All">
+  </div>  
+</form>
+<% @contacts.each do |contact| %>
+  <div>
+    <%= contact.firstname %> <%= contact.lastname %> (<%= contact.email %>)
+  </div>
+<% end %>
+
+<!-- Find (id, first_name, last_name, email) -->
+<hr>
+
+<h3>Find/Search</h3>
+<form method="get" action="/find">
+  <div>
+    <label>Search:</label>
+    <input type="text" name="query" placeholder="by first/last/email">
+  </div>
+  <div>
+    <input type="submit" value="Search">
+  </div>  
+</form>
+
+<!-- Delete -->
+<!-- Add phone -->
