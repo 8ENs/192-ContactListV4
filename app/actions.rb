@@ -14,23 +14,23 @@ get '/' do #, map: '/index', provides: [:html, :json] do
   # end
 end
 
-get '/all' do
+get '/contacts' do
   @contacts = Contact.all
   erb :index
 end
 
-get '/find' do
+get '/contacts/:id' do
   @contacts = Contact.where('firstname LIKE ? OR lastname LIKE ? OR email LIKE ?', "%#{params[:query]}%", "%#{params[:query]}%", "%#{params[:query]}%")
   erb :index
 end
 
-get '/delete' do
+get '/contact/delete' do
   @contact = Contact.find(params[:id])
   @contact.destroy
   erb :index
 end
 
-post '/new_contact' do
+post '/contact/new' do
   @contact = Contact.new(
     firstname:   params[:firstname],
     lastname:  params[:lastname],
@@ -43,7 +43,7 @@ post '/new_contact' do
   end
 end
 
-post '/add_phone' do
+post '/contact/phone/new' do
   @phone = Phone.new(
     phone:   params[:phone],
     label:  params[:label],
