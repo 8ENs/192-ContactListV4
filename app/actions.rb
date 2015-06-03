@@ -1,27 +1,18 @@
 # Homepage (Root path)
-get '/' do #, map: '/index', provides: [:html, :json] do
+get '/' do
   erb :index
-  # erb :'contacts/index'
-
-  # @contacts = Contact.all
-
-  # case content_type
-  # when :html
-  #   erb :index
-  #   render '/'
-  # when :json
-  #   @contacts.to_json
-  # end
 end
 
 get '/contacts' do
-  @contacts = Contact.all
-  erb :index
+  @contacts = Contact.all.map do |contact|
+    { contact: contact, digits: contact.phones }
+  end.to_json
 end
 
-get '/contacts/:id' do
-  @contacts = Contact.where('firstname LIKE ? OR lastname LIKE ? OR email LIKE ?', "%#{params[:query]}%", "%#{params[:query]}%", "%#{params[:query]}%")
-  erb :index
+get '/contacts/find' do
+  @contacts = Contact.where('firstname LIKE ? OR lastname LIKE ? OR email LIKE ?', "%#{params[:query]}%", "%#{params[:query]}%", "%#{params[:query]}%").map do |contact|
+    { contact: contact, digits: contact.phones }
+  end.to_json
 end
 
 get '/contact/delete' do
@@ -31,16 +22,22 @@ get '/contact/delete' do
 end
 
 post '/contact/new' do
-  @contact = Contact.new(
+  response = {result: false}
+  newContact = Contact.create(
     firstname:   params[:firstname],
     lastname:  params[:lastname],
     email:  params[:email]
   )
-  if @contact.save
-    redirect '/'
-  else
-    erb :index
+  
+  if newContact
+    response[:result] = true 
+    response[:id] = newContact.id
+    response[:firstname] = newContact.firstname
+    response[:lastname] = newContact.lastname
+    response[:email] = newContact.email
   end
+
+  response.to_json
 end
 
 post '/contact/phone/new' do

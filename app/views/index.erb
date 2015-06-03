@@ -1,90 +1,90 @@
 <h1>Contact List</h1>
 
-<!-- Create new -->
+<div id="navbar">
+  <button id="b_create_new">Create new</button>
+  <button id="b_list_all" method="get" action="/contacts">List all</button>
+  <button id="b_find">Find</button>
+  <button id="b_delete">Delete</button>
+  <button id="b_add_phone">Add phone</button>
+</div>
 
-<h3>Create new</h3>
-<form method="post" action="/contact/new">
-  <div>
-    <label>First Name:</label>
-    <input type="text" name="firstname" placeholder="first" required="true">
-  </div>
-  <div>
-    <label>Last Name:</label>
-    <input type="text" name="lastname" placeholder="last" required="true">
-  </div>
-  <div>
-    <label>Email:</label>
-    <input type="email" name="email" placeholder="email" required="true">
-  </div>
-  <div>
-    <input type="submit" value="Save">
-  </div>
-</form>
+<hr>
+
+<!-- Only on startup -->
+<div class="main">
+  <h3>Welcome</h3>
+</div>
+
+<!-- Create new -->
+<div id="create_new" class="main" style="display: none">
+  <h3>Create new</h3>
+  <form method="post" action="/contact/new">
+    <div>
+      <label>First Name:</label>
+      <input type="text" name="firstname" placeholder="first" required="true">
+    </div>
+    <div>
+      <label>Last Name:</label>
+      <input type="text" name="lastname" placeholder="last" required="true">
+    </div>
+    <div>
+      <label>Email:</label>
+      <input type="email" name="email" placeholder="email" required="true">
+    </div>
+    <div>
+      <input id="create_new_save" type="submit" value="Save">
+    </div>
+  </form>
+</div>
 
 <!-- List all -->
-<hr>
+<div id="list_all" class="main" style="display: none">
+  <h3>List all</h3>
+</div>
 
-<h3>List</h3>
-<form method="get" action="/contacts">
-  <div>
-    <input type="submit" value="All">
-  </div>  
-</form>
-<% if @contacts %>
-  <% @contacts.each do |contact| %>
-    <div>
-      <%= contact.echo %>
-    </div>
-  <% end %>
-<% end %>
-
-<!-- Find (id, first_name, last_name, email) -->
-<hr>
-
-<h3>Find/Search</h3>
-<form method="get" action="/contacts/:id">
-  <div>
-    <label>Search:</label>
-    <input type="text" name="query" placeholder="by first/last/email">
-  </div>
-  <div>
-    <input type="submit" value="Search">
-  </div>  
-</form>
+<!-- Find -->
+<div id="find" class="main" style="display: none">
+  <h3>Find</h3>
+  <input id="search_box" type="text" name="query" placeholder="by first/last/email">
+</div>
 
 <!-- Delete -->
-<hr>
-
-<h3>Delete</h3>
-<form method="get" action="/contact/delete">
-  <div>
-    <label>Delete:</label>
-    <input type="text" name="id" placeholder="by id # (integer)">
-  </div>
-  <div>
-    <input type="submit" value="Delete">
-  </div>  
-</form>
+<div id="delete" class="main" style="display: none">
+  <h3>Delete</h3>
+    <div>
+      <label>ID #:</label>
+      <input id="delete_id" type="text" name="id" placeholder="by id # (integer)">
+      <button id="b_delete_id">Delete</button>
+    </div>  
+  </form>
+</div>
 
 <!-- Add phone -->
+<div id="add_phone" class="main" style="display: none">
+  <h3>Add phone</h3>
+  <form method="post" action="/contact/phone/new">
+    <div>
+      <label>Phone:</label>
+      <input type="text" name="phone" placeholder="#x9" required="true">
+    </div>
+    <div>
+      <label>Label:</label>
+      <input type="text" name="label" placeholder="label" required="true">
+    </div>
+
+    <div>
+      <label>Add to contact #:</label>
+      <input type="text" name="id" placeholder="by id # (integer)">
+    </div>
+    <div>
+      <input type="submit" value="Add phone">
+    </div>  
+  </form>
+</div>
+
 <hr>
 
-<h3>Add phone</h3>
-<form method="post" action="/contact/phone/new">
-  <div>
-    <label>Phone:</label>
-    <input type="text" name="phone" placeholder="#x9" required="true">
-  </div>
-  <div>
-    <label>Label:</label>
-    <input type="text" name="label" placeholder="label" required="true">
-  </div>
+<!-- Everything will show up here -->
+<div id="show">
 
-  <div>
-    <label>Add to contact #:</label>
-    <input type="text" name="id" placeholder="by id # (integer)">
-  </div>
-  <div>
-    <input type="submit" value="Add phone">
-  </div>  
-</form>
+</div>
