@@ -21,6 +21,7 @@ get '/contact/delete/:id' do
 end
 
 post '/contact/new/' do
+  binding.pry
   response = {result: false}
   newContact = Contact.create(
     firstname:   params[:firstname],

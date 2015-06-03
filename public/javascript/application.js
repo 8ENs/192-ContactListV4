@@ -59,17 +59,28 @@ $(function() {
     });
   });
 
+  var delay = (function(){
+    var timer = 0;
+    return function(callback, ms){
+      clearTimeout (timer);
+      timer = setTimeout(callback, ms);
+    };
+  })();
+
   $( "#search_box" ).on( "keyup", function() {
-    var search_string = $( this ).val();
-    $( ".show_all").remove();
+    var self = this;
+    delay(function(){
+      var search_string = $( self ).val();
+      $( ".show_all").remove();
 
-    $.getJSON( "/contacts/find?query=" + search_string, function( data ) {
-      iterator(data);
+      $.getJSON( "/contacts/find?query=" + search_string, function( data ) {
+        iterator(data);
 
-      if ($("h3:visible")[0].innerText == "Find") {
-        list(contacts);
-      }
-    });
+        if ($("h3:visible")[0].innerText == "Find") {
+          list(contacts);
+        }
+      });
+    }, 500 );
   });
 
   $( "#b_delete_id" ).on( "click", function() {
@@ -83,7 +94,7 @@ $(function() {
     var firstname = $( "#firstname" ).val();
     var lastname = $( "#lastname" ).val();
     var email = $( "#email" ).val();
-    var url = "/contact/new/?firstname=" + firstname + "&lastname=" + lastname + "&email=" + email;
+    var url = "/contact/new/" // ?firstname=" + firstname + "&lastname=" + lastname + "&email=" + email;
     var newUser = {firstname: firstname, lastname: lastname, email: email};
     $.post( url, newUser, function (data) {
       data = JSON.parse(data);
