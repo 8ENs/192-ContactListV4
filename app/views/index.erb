@@ -1,4 +1,5 @@
 <h1>Contact List</h1>
+<h6>(warning: limited error checking)</h6>
 
 <div id="navbar">
   <button id="b_create_new">Create new</button>
@@ -18,23 +19,22 @@
 <!-- Create new -->
 <div id="create_new" class="main" style="display: none">
   <h3>Create new</h3>
-  <form method="post" action="/contact/new">
-    <div>
-      <label>First Name:</label>
-      <input type="text" name="firstname" placeholder="first" required="true">
-    </div>
-    <div>
-      <label>Last Name:</label>
-      <input type="text" name="lastname" placeholder="last" required="true">
-    </div>
-    <div>
-      <label>Email:</label>
-      <input type="email" name="email" placeholder="email" required="true">
-    </div>
-    <div>
-      <input id="create_new_save" type="submit" value="Save">
-    </div>
-  </form>
+  <div>
+    <label>First Name:</label>
+    <input id="firstname" type="text" name="firstname" placeholder="first" required="true">
+  </div>
+  <div>
+    <label>Last Name:</label>
+    <input id="lastname" type="text" name="lastname" placeholder="last" required="true">
+  </div>
+  <div>
+    <label>Email:</label>
+    <input id="email" type="email" name="email" placeholder="email" required="true">
+  </div>
+  <div>
+    <button id="b_save">Save</button>
+    <span id="saved" style="display: none">Saved!</span>
+  </div>
 </div>
 
 <!-- List all -->
@@ -53,8 +53,9 @@
   <h3>Delete</h3>
     <div>
       <label>ID #:</label>
-      <input id="delete_id" type="text" name="id" placeholder="by id # (integer)">
+      <input id="delete_id" type="text" name="id" placeholder="by id # (integer)" required="true">
       <button id="b_delete_id">Delete</button>
+      <span id="deleted" style="display: none">User deleted!</span>
     </div>  
   </form>
 </div>

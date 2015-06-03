@@ -73,14 +73,30 @@ $(function() {
   });
 
   $( "#b_delete_id" ).on( "click", function() {
-
+    var id = $( "#delete_id" ).val();
+    $.get( "/contact/delete/" + id );
+    $( "#delete_id" ).val('');
+    $("#deleted").fadeIn('slow').fadeOut('slow');
   });
 
-  $( "#create_new_save" ).on( "click", function() {
-    // e.preventDefault();
-    // $.post( "/contact/new", function( response ) {
-    //   console.log(response);
-    // });
+  $( "#b_save" ).on( "click", function() {
+    var firstname = $( "#firstname" ).val();
+    var lastname = $( "#lastname" ).val();
+    var email = $( "#email" ).val();
+    var url = "/contact/new/?firstname=" + firstname + "&lastname=" + lastname + "&email=" + email;
+    var newUser = {firstname: firstname, lastname: lastname, email: email};
+    $.post( url, newUser, function (data) {
+      data = JSON.parse(data);
+      console.log(data.result)
+      if (data.result) {
+        $( "#firstname" ).val('');
+        $( "#lastname" ).val('');
+        $( "#email" ).val('');
+        $( "#saved" ).fadeIn('slow').fadeOut('slow');
+      } else {
+        alert("STB");
+      }
+    });
   });
 
 });

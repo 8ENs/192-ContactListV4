@@ -15,27 +15,20 @@ get '/contacts/find' do
   end.to_json
 end
 
-get '/contact/delete' do
+get '/contact/delete/:id' do
   @contact = Contact.find(params[:id])
-  @contact.destroy
-  erb :index
+  @contact.destroy if @contact
 end
 
-post '/contact/new' do
+post '/contact/new/' do
   response = {result: false}
   newContact = Contact.create(
     firstname:   params[:firstname],
     lastname:  params[:lastname],
     email:  params[:email]
   )
-  
-  if newContact
-    response[:result] = true 
-    response[:id] = newContact.id
-    response[:firstname] = newContact.firstname
-    response[:lastname] = newContact.lastname
-    response[:email] = newContact.email
-  end
+
+  response[:result] = true if newContact.valid?
 
   response.to_json
 end
