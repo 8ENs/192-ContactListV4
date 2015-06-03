@@ -63,24 +63,22 @@
 <!-- Add phone -->
 <div id="add_phone" class="main" style="display: none">
   <h3>Add phone</h3>
-  <form method="post" action="/contact/phone/new">
-    <div>
-      <label>Phone:</label>
-      <input type="text" name="phone" placeholder="#x9" required="true">
-    </div>
-    <div>
-      <label>Label:</label>
-      <input type="text" name="label" placeholder="label" required="true">
-    </div>
-
-    <div>
-      <label>Add to contact #:</label>
-      <input type="text" name="id" placeholder="by id # (integer)">
-    </div>
-    <div>
-      <input type="submit" value="Add phone">
-    </div>  
-  </form>
+  <div>
+    <label>Phone #:</label>
+    <input id="phone" type="text" name="phone" placeholder="#x9" required="true">
+  </div>
+  <div>
+    <label>Label:</label>
+    <input id="label" type="text" name="label" placeholder="label" required="true">
+  </div>
+  <div>
+    <label>Add to contact ID #:</label>
+    <input id="contact_id" type="text" name="id" placeholder="by id # (integer)" required="true">
+  </div>
+  <div>
+    <button id="b_save_phone">Add</button>
+    <span id="saved_phone" style="display: none">Added!</span>
+  </div>  
 </div>
 
 <hr>

@@ -1,5 +1,5 @@
 class Contact < ActiveRecord::Base
-  has_many :phones
+  has_many :phones, dependent: :destroy
 
   validates :firstname, :lastname, :email, presence: true
   validates :email, uniqueness: true,

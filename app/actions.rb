@@ -20,8 +20,7 @@ get '/contact/delete/:id' do
   @contact.destroy if @contact
 end
 
-post '/contact/new/' do
-  binding.pry
+post '/contact/new' do
   response = {result: false}
   newContact = Contact.create(
     firstname:   params[:firstname],
@@ -35,14 +34,14 @@ post '/contact/new/' do
 end
 
 post '/contact/phone/new' do
-  @phone = Phone.new(
+  response = {result: false}
+  newPhone = Phone.create(
     phone:   params[:phone],
     label:  params[:label],
-    contact_id:  params[:id]
+    contact_id:  params[:contact_id]
   )
-  if @phone.save
-    redirect '/'
-  else
-    erb :index
-  end
+
+  response[:result] = true if newPhone.valid?
+
+  response.to_json
 end

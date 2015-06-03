@@ -9,6 +9,7 @@ $(function() {
 
   // initializing
   var contacts = [];
+  var phones = "";
 
   $( "#navbar button" ).on( "click", function() {
     // hide all visible '.main' views
@@ -25,16 +26,24 @@ $(function() {
     $( "#search_box" ).val('');
   });
 
+  // phone mash
+
+
   // process list
   function iterator(data) {
     contacts = [];
     $.each( data, function( key, val ) {
+      phones = "";
+      $.each( val.digits, function( key, val ) {
+        phones = phones.concat(" | " + val.phone + " (" + val.label + ")");
+      });
       contacts.push( 
         "<li id='" + key + "'>"
         + val.contact.id + ": "
         + val.contact.firstname + " "
         + val.contact.lastname
         + " (" + val.contact.email + ")"
+        + phones
         + "</li>"
       );
     });
@@ -94,16 +103,33 @@ $(function() {
     var firstname = $( "#firstname" ).val();
     var lastname = $( "#lastname" ).val();
     var email = $( "#email" ).val();
-    var url = "/contact/new/" // ?firstname=" + firstname + "&lastname=" + lastname + "&email=" + email;
+    var url = "/contact/new" // /?firstname=" + firstname + "&lastname=" + lastname + "&email=" + email;
     var newUser = {firstname: firstname, lastname: lastname, email: email};
     $.post( url, newUser, function (data) {
       data = JSON.parse(data);
-      console.log(data.result)
       if (data.result) {
         $( "#firstname" ).val('');
         $( "#lastname" ).val('');
         $( "#email" ).val('');
         $( "#saved" ).fadeIn('slow').fadeOut('slow');
+      } else {
+        alert("STB");
+      }
+    });
+  });
+
+  $( "#b_save_phone" ).on( "click", function() {
+    var phone = $( "#phone" ).val();
+    var label = $( "#label" ).val();
+    var contact_id = $( "#contact_id" ).val();
+    var newPhone = {phone: phone, label: label, contact_id: contact_id};
+    $.post( '/contact/phone/new', newPhone, function (data) {
+      data = JSON.parse(data);
+      if (data.result) {
+        $( "#phone" ).val('');
+        $( "#label" ).val('');
+        $( "#contact_id" ).val('');
+        $( "#saved_phone" ).fadeIn('slow').fadeOut('slow');
       } else {
         alert("STB");
       }
