@@ -10,7 +10,7 @@ get '/contacts' do
 end
 
 get '/contacts/find' do
-  @contacts = Contact.where('firstname LIKE ? OR lastname LIKE ? OR email LIKE ?', "%#{params[:query]}%", "%#{params[:query]}%", "%#{params[:query]}%").map do |contact|
+  @contacts = Contact.joins(:phones).where('(firstname || lastname || email || phone || label) LIKE ?', "%#{params[:query]}%").map do |contact|
     { contact: contact, digits: contact.phones }
   end.to_json
 end

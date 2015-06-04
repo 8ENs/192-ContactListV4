@@ -26,10 +26,7 @@ $(function() {
     $( "#search_box" ).val('');
   });
 
-  // phone mash
-
-
-  // process list
+  // generate list
   function iterator(data) {
     contacts = [];
     $.each( data, function( key, val ) {
@@ -57,17 +54,35 @@ $(function() {
     }).appendTo( "#show" );
   }
 
+  // if .save (success), clear input boxes and flash a 'Success!' message (this covers two views)
+  function process(data) {
+    data = JSON.parse(data);
+    if (data.result) {
+      $( "#firstname" ).val('');
+      $( "#lastname" ).val('');
+      $( "#email" ).val('');
+      $( "#phone" ).val('');
+      $( "#label" ).val('');
+      $( "#contact_id" ).val('');
+      $( ".saved" ).fadeIn('slow').fadeOut('slow');
+    } else {
+      alert("STB");
+    }
+  }
+
   $( "#b_list_all" ).on( "click", function() {
     // e.preventDefault();
     $.getJSON( "/contacts", function( data ) {
       iterator(data);
      
+      // only display results if still on the appropriate view
       if ($("h3:visible")[0].innerText == "List all") {
         list(contacts);
       }
     });
   });
 
+  // added delay on keyup to avoid multiple ajax calls stacking up and printing results multiple times
   var delay = (function(){
     var timer = 0;
     return function(callback, ms){
@@ -76,15 +91,19 @@ $(function() {
     };
   })();
 
+  // find dynamically from search box
   $( "#search_box" ).on( "keyup", function() {
     var self = this;
     delay(function(){
       var search_string = $( self ).val();
+      var query_hash = {query: search_string};
       $( ".show_all").remove();
 
-      $.getJSON( "/contacts/find?query=" + search_string, function( data ) {
+      // alternatively could have passed params direclty in url: $.getJSON( "/contacts/find?query=" + search_string, function( data ) {
+      $.getJSON( "/contacts/find", query_hash, function( data ) {
         iterator(data);
 
+        // only display results if still on the appropriate view
         if ($("h3:visible")[0].innerText == "Find") {
           list(contacts);
         }
@@ -92,6 +111,7 @@ $(function() {
     }, 500 );
   });
 
+  // destroy the database entry (no error handling for id not found)
   $( "#b_delete_id" ).on( "click", function() {
     var id = $( "#delete_id" ).val();
     $.get( "/contact/delete/" + id );
@@ -99,40 +119,28 @@ $(function() {
     $("#deleted").fadeIn('slow').fadeOut('slow');
   });
 
+  // creates new contact in DB
   $( "#b_save" ).on( "click", function() {
     var firstname = $( "#firstname" ).val();
     var lastname = $( "#lastname" ).val();
     var email = $( "#email" ).val();
-    var url = "/contact/new" // /?firstname=" + firstname + "&lastname=" + lastname + "&email=" + email;
+
+    // alternatively could have sent url in with params directly: var url = "/contact/new/?firstname=" + firstname + "&lastname=" + lastname + "&email=" + email;
+    var url = "/contact/new"
     var newUser = {firstname: firstname, lastname: lastname, email: email};
     $.post( url, newUser, function (data) {
-      data = JSON.parse(data);
-      if (data.result) {
-        $( "#firstname" ).val('');
-        $( "#lastname" ).val('');
-        $( "#email" ).val('');
-        $( "#saved" ).fadeIn('slow').fadeOut('slow');
-      } else {
-        alert("STB");
-      }
+      process(data);
     });
   });
 
+  // adds new phone in DB
   $( "#b_save_phone" ).on( "click", function() {
     var phone = $( "#phone" ).val();
     var label = $( "#label" ).val();
     var contact_id = $( "#contact_id" ).val();
     var newPhone = {phone: phone, label: label, contact_id: contact_id};
     $.post( '/contact/phone/new', newPhone, function (data) {
-      data = JSON.parse(data);
-      if (data.result) {
-        $( "#phone" ).val('');
-        $( "#label" ).val('');
-        $( "#contact_id" ).val('');
-        $( "#saved_phone" ).fadeIn('slow').fadeOut('slow');
-      } else {
-        alert("STB");
-      }
+      process(data);
     });
   });
 
